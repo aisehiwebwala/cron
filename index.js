@@ -1,13 +1,17 @@
-const express = require('express')
-const app = express()
-const port = 3000
-
-
+const express = require("express");
+const app = express();
+const port = 3000;
+const dotenv = require("dotenv");
 const cron = require("node-cron");
 
-cron.schedule("* * * * *",async()=>{
-    fetch("https://proto.choreoapps.dev/env");
-})
+dotenv.config();
 
+const data = JSON.parse(process.env.URLS);
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+cron.schedule("* * * * *", async () => {
+  data.forEach((val) => {
+    fetch(val);
+  });
+});
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
